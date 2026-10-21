@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:title" content="Kermesse — камерные вечера в Москве">
+<meta property="og:description" content="Живая музыка, искусство и новые знакомства. Искусство встреч.">
+<meta property="og:image" content="favicon.png">
+<title>Kermesse — камерные вечера в Москве</title>
+<meta name="description" content="Kermesse: камерные вечера музыки и искусства в Москве. Искусство встреч.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@400;500&display=swap">
+<style>
+/* Layout: printed evening programme. Champagne paper, bordo bands, gold hairlines; events as tickets; three "doors" for three audiences. */
+:root {
+  --bg: #F3E7DA;          /* шампань */
+  --bg-raised: #FBF5EE;
+  --fg: #1C1A1F;          /* графит */
+  --muted: #6A5A5D;
+  --line: #D9C6B2;
+  --accent: #5A1E2C;      /* бордо */
+  --accent-fg: #F3E7DA;
+  --gold: #A8834A;        /* старое золото */
+  --band-bg: #5A1E2C;
+  --band-fg: #F3E7DA;
+  --band-muted: #D9C3B5;
+  --band-gold: #C9A46A;   /* светлое золото */
+  --stub-bg: rgba(168, 131, 74, .16);
+  --logo-main: #5A1E2C;
+  --logo-gold: #A8834A;
+  --focus: #A8834A;
+
+  --f-display: "Italiana", "Cormorant Garamond", "Didot", "Bodoni 72", Georgia, serif;
+  --f-serif: "Cormorant Garamond", "Garamond", Georgia, serif;
+  --f-sans: "Jost", "Futura", "Avenir Next", system-ui, sans-serif;
+
+  --wrap: 1120px;
+  --radius: 2px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1C1A1F; --bg-raised: #252228; --fg: #F3E7DA; --muted: #B8AAA2; --line: #3B353B;
+    --accent: #C9A46A; --accent-fg: #1C1A1F; --gold: #C9A46A;
+    --band-bg: #4A1825; --band-fg: #F3E7DA; --band-muted: #D2BBAE; --band-gold: #C9A46A;
+    --stub-bg: rgba(201, 164, 106, .16); --logo-main: #F3E7DA; --logo-gold: #C9A46A; --focus: #C9A46A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1C1A1F; --bg-raised: #252228; --fg: #F3E7DA; --muted: #B8AAA2; --line: #3B353B;
+  --accent: #C9A46A; --accent-fg: #1C1A1F; --gold: #C9A46A;
+  --band-bg: #4A1825; --band-fg: #F3E7DA; --band-muted: #D2BBAE; --band-gold: #C9A46A;
+  --stub-bg: rgba(201, 164, 106, .16); --logo-main: #F3E7DA; --logo-gold: #C9A46A; --focus: #C9A46A;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--f-sans); font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+
+.wrap {
+  max-width: var(--wrap); margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 720px) {
+  .wrap { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); }
+}
+
+/* --- заглушки --- */
+.stub { background: var(--stub-bg); border-bottom: 1px dashed var(--gold); padding: 0 .15em; }
+.stub-tag {
+  display: inline-block; font: 500 10px/1 var(--f-sans); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--gold); border: 1px dashed var(--gold); padding: 4px 6px 3px; vertical-align: middle; white-space: nowrap;
+}
+
+/* --- плашка макета --- */
+.mock-note { background: var(--fg); color: var(--bg); font-size: 13px; }
+.mock-note .wrap { padding-block: 8px; display: flex; gap: 8px 16px; flex-wrap: wrap; align-items: center; justify-content: center; text-align: center; }
+.mock-note .stub { color: var(--bg); }
+
+/* --- шапка --- */
+.site-head {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.site-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand svg { width: 30px; height: auto; flex: none; }
+.brand-word { font-family: var(--f-display); font-size: 20px; letter-spacing: .16em; color: var(--logo-main); }
+.nav { display: flex; gap: 4px; align-items: center; }
+.nav a {
+  text-decoration: none; font-size: 14px; letter-spacing: .04em; padding: 8px 12px; color: var(--fg);
+  border-bottom: 1px solid transparent;
+}
+.nav a:hover { border-bottom-color: var(--gold); }
+.nav .nav-cta { background: var(--accent); color: var(--accent-fg); margin-left: 8px; border-radius: var(--radius); }
+.nav .nav-cta:hover { border-bottom-color: transparent; filter: brightness(1.08); }
+.nav-toggle {
+  display: none; background: none; border: 1px solid var(--line); color: var(--fg);
+  font: 500 13px var(--f-sans); letter-spacing: .1em; text-transform: uppercase; padding: 8px 12px; border-radius: var(--radius); cursor: pointer;
+}
+@media (max-width: 880px) {
+  .nav-toggle { display: block; }
+  .nav {
+    display: none; position: absolute; left: 0; right: 0; top: 100%;
+    flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px));
+  }
+  .nav.open { display: flex; }
+  .nav a { padding: 12px 4px; border-bottom: 1px solid var(--line); font-size: 16px; }
+  .nav .nav-cta { margin: 12px 0 0; text-align: center; border-bottom: 0; }
+}
+
+/* --- кнопки --- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font: 500 14px/1 var(--f-sans); letter-spacing: .08em; text-transform: uppercase; text-decoration: none;
+  padding: 15px 22px; border-radius: var(--radius); cursor: pointer; border: 1px solid var(--accent);
+  background: var(--accent); color: var(--accent-fg); transition: filter .2s, background .2s;
+}
+.btn:hover { filter: brightness(1.1); }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn.ghost:hover { background: var(--stub-bg); filter: none; }
+.band .btn { background: var(--band-gold); border-color: var(--band-gold); color: #1C1A1F; }
+.band .btn.ghost { background: transparent; color: var(--band-fg); border-color: var(--band-gold); }
+
+/* --- общие элементы секций --- */
+section { padding-block: 72px; }
+@media (min-width: 720px) { section { padding-block: 104px; } }
+.eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  font: 500 12px/1 var(--f-sans); letter-spacing: .32em; text-transform: uppercase; color: var(--gold);
+}
+.eyebrow::before { content: ""; width: 8px; height: 8px; background: currentColor; transform: rotate(45deg); flex: none; }
+.band .eyebrow { color: var(--band-gold); }
+.sec-head { display: grid; gap: 16px; max-width: 720px; margin-bottom: 48px; }
+.sec-head h2 { font-family: var(--f-display); font-size: clamp(36px, 6vw, 58px); line-height: 1.05; letter-spacing: .01em; }
+.lead { font-family: var(--f-serif); font-size: clamp(20px, 2.4vw, 24px); line-height: 1.45; color: var(--muted); max-width: 62ch; }
+.band .lead { color: var(--band-muted); }
+.band { background: var(--band-bg); color: var(--band-fg); }
+
+/* --- герой --- */
+.hero { padding-block: 56px 72px; position: relative; overflow: hidden; }
+@media (min-width: 720px) { .hero { padding-block: 88px 104px; } }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 48px; align-items: center; }
+@media (max-width: 800px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); } .hero-mark { order: -1; max-width: 150px; } }
+.hero h1 {
+  font-family: var(--f-display); font-size: clamp(52px, 10vw, 112px); line-height: .95; letter-spacing: .01em; color: var(--logo-main);
+}
+.hero .sub {
+  font-family: var(--f-serif); font-style: italic; font-weight: 500; font-size: clamp(24px, 3.2vw, 34px);
+  color: var(--gold); margin-top: 12px; display: flex; align-items: center; gap: 16px;
+}
+.hero .sub::after { content: ""; height: 1px; background: var(--gold); flex: 1; max-width: 160px; opacity: .7; }
+.hero .intro { margin-top: 28px; font-family: var(--f-serif); font-size: clamp(20px, 2.3vw, 24px); line-height: 1.5; max-width: 34ch; }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.hero-mark { justify-self: center; width: 100%; max-width: 300px; }
+.hero-mark svg { width: 100%; height: auto; display: block; }
+.hero-mark .glow { animation: glow 4.5s ease-in-out infinite; transform-origin: center; }
+@keyframes glow { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+@media (prefers-reduced-motion: reduce) { .hero-mark .glow { animation: none; } }
+.since { text-align: center; font: 500 11px var(--f-sans); letter-spacing: .42em; text-transform: uppercase; color: var(--gold); margin-top: 8px; }
+
+/* --- три двери --- */
+.doors { padding-block: 0 72px; }
+.doors-title { font-family: var(--f-serif); font-style: italic; font-size: 22px; color: var(--muted); margin-bottom: 20px; }
+.door-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 860px) { .door-grid { grid-template-columns: minmax(0, 1fr); } }
+.door {
+  display: grid; gap: 10px; align-content: start; text-decoration: none; padding: 28px 24px 24px;
+  background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius);
+  transition: border-color .2s, transform .2s;
+}
+.door:hover { border-color: var(--gold); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .door:hover { transform: none; } }
+.door .who { font: 500 12px var(--f-sans); letter-spacing: .24em; text-transform: uppercase; color: var(--gold); }
+.door h3 { font-family: var(--f-serif); font-weight: 500; font-size: 28px; line-height: 1.15; }
+.door p { color: var(--muted); font-size: 15px; }
+.door .go { margin-top: 8px; font-size: 14px; letter-spacing: .06em; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.door .go::after { content: "→"; transition: transform .2s; }
+.door:hover .go::after { transform: translateX(4px); }
+
+/* --- афиша --- */
+.events { display: grid; gap: 24px; }
+.ticket {
+  display: grid; grid-template-columns: 180px minmax(0, 1fr); background: var(--bg-raised);
+  border: 1px solid var(--line); border-radius: var(--radius); position: relative;
+}
+.ticket-date {
+  border-right: 1px dashed var(--line); padding: 28px 20px; display: grid; align-content: center; justify-items: center; gap: 4px; text-align: center;
+  position: relative;
+}
+.ticket-date::before, .ticket-date::after {
+  content: ""; position: absolute; right: -11px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--line);
+}
+.ticket-date::before { top: -11px; } .ticket-date::after { bottom: -11px; }
+.ticket-date .month { font: 500 12px var(--f-sans); letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+.ticket-date .day { font-family: var(--f-serif); font-weight: 500; font-size: 64px; line-height: 1; color: var(--logo-main); }
+.ticket-date .wd { font-family: var(--f-serif); font-style: italic; font-size: 18px; color: var(--muted); }
+.ticket-body { padding: 28px 28px 28px 32px; display: grid; gap: 16px; min-width: 0; }
+.ticket-kind { font: 500 12px var(--f-sans); letter-spacing: .24em; text-transform: uppercase; color: var(--gold); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.ticket h3 { font-family: var(--f-display); font-size: clamp(30px, 4vw, 42px); line-height: 1.05; }
+.ticket .desc { font-family: var(--f-serif); font-size: 20px; line-height: 1.5; max-width: 60ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 0; padding: 14px 0 0; border-top: 1px solid var(--line); }
+.facts div { display: grid; gap: 2px; }
+.facts dt { font: 500 11px var(--f-sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 0; font-size: 15px; }
+.ticket .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+@media (max-width: 640px) {
+  .ticket { grid-template-columns: minmax(0, 1fr); }
+  .ticket-date { border-right: 0; border-bottom: 1px dashed var(--line); grid-auto-flow: column; justify-content: start; gap: 12px; padding: 18px 20px; align-items: baseline; }
+  .ticket-date::before, .ticket-date::after { right: auto; top: auto; bottom: -11px; }
+  .ticket-date::before { left: -11px; } .ticket-date::after { right: -11px; }
+  .ticket-date .day { font-size: 44px; }
+  .ticket-body { padding: 22px 20px; }
+}
+.soon {
+  display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; justify-content: space-between;
+  padding: 24px 28px; border: 1px dashed var(--gold); border-radius: var(--radius);
+}
+.soon p { font-family: var(--f-serif); font-size: 20px; }
+.soon em { color: var(--gold); }
+
+/* --- формат --- */
+.format-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+@media (max-width: 860px) { .format-grid { grid-template-columns: minmax(0, 1fr); gap: 48px; } }
+.traits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 28px; }
+@media (max-width: 520px) { .traits { grid-template-columns: minmax(0, 1fr); } }
+.trait { display: grid; gap: 8px; align-content: start; padding-top: 16px; border-top: 1px solid rgba(201, 164, 106, .5); }
+.trait h3 { font-family: var(--f-serif); font-weight: 500; font-size: 26px; color: var(--band-fg); }
+.trait p { color: var(--band-muted); font-size: 15px; }
+.programme { border: 1px solid rgba(201, 164, 106, .55); padding: 32px 28px; position: relative; }
+.programme::before { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(201, 164, 106, .25); pointer-events: none; }
+.programme h3 { font-family: var(--f-display); font-size: 30px; letter-spacing: .08em; text-align: center; color: var(--band-fg); }
+.programme .hint { text-align: center; font-family: var(--f-serif); font-style: italic; color: var(--band-gold); margin: 4px 0 24px; font-size: 18px; }
+.programme ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.programme li { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px dotted rgba(201, 164, 106, .4); }
+.programme li:last-child { border-bottom: 0; }
+.programme time { font-family: var(--f-serif); font-weight: 500; font-size: 22px; color: var(--band-gold); font-variant-numeric: tabular-nums; }
+.programme b { font-weight: 500; display: block; }
+.programme span { color: var(--band-muted); font-size: 14px; }
+
+/* --- шаги и FAQ --- */
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; counter-reset: step; list-style: none; padding: 0; margin: 0 0 64px; }
+@media (max-width: 760px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.steps li { counter-increment: step; display: grid; gap: 8px; align-content: start; }
+.steps li::before {
+  content: counter(step); font-family: var(--f-display); font-size: 44px; line-height: 1; color: var(--gold);
+}
+.steps h3 { font-family: var(--f-serif); font-weight: 500; font-size: 24px; }
+.steps p { color: var(--muted); font-size: 15px; }
+.faq { display: grid; border-top: 1px solid var(--line); max-width: 820px; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary {
+  cursor: pointer; list-style: none; padding: 18px 40px 18px 0; position: relative;
+  font-family: var(--f-serif); font-weight: 500; font-size: 22px;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; position: absolute; right: 4px; top: 14px; font: 400 26px var(--f-sans); color: var(--gold); transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding: 0 0 20px; color: var(--muted); max-width: 64ch; }
+
+/* --- формы --- */
+.form-card { background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 28px; display: grid; gap: 20px; }
+@media (max-width: 520px) { .form-card { padding: 24px 18px; } }
+.band .form-card { background: rgba(0, 0, 0, .14); border-color: rgba(201, 164, 106, .4); }
+.form-card h3 { font-family: var(--f-display); font-size: 32px; line-height: 1.1; }
+.form-card .note { font-size: 14px; color: var(--muted); }
+.band .form-card .note { color: var(--band-muted); }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 560px) { .fields { grid-template-columns: minmax(0, 1fr); } }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field.wide { grid-column: 1 / -1; }
+.field label { font: 500 12px var(--f-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.band .field label { color: var(--band-muted); }
+.field input, .field select, .field textarea {
+  width: 100%; font: 400 16px var(--f-sans); color: var(--fg); background: var(--bg);
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px;
+}
+.band .field input, .band .field select, .band .field textarea { background: rgba(243, 231, 218, .08); color: var(--band-fg); border-color: rgba(201, 164, 106, .45); }
+.band .field select option { color: #1C1A1F; }
+.field textarea { min-height: 96px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--focus); outline-offset: 0; border-color: transparent; }
+.form-done { font-family: var(--f-serif); font-size: 19px; padding: 14px 16px; border: 1px dashed var(--gold); }
+.form-row { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+
+/* --- участникам --- */
+.roles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 56px; }
+@media (max-width: 900px) { .roles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .roles { grid-template-columns: minmax(0, 1fr); } }
+.role { padding: 24px 20px; border: 1px solid var(--line); display: grid; gap: 8px; align-content: start; }
+.role h3 { font-family: var(--f-serif); font-weight: 500; font-size: 24px; }
+.role p { color: var(--muted); font-size: 15px; }
+.split { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 48px; align-items: start; }
+@media (max-width: 900px) { .split { grid-template-columns: minmax(0, 1fr); } }
+.terms { display: grid; gap: 28px; }
+.terms h3 { font-family: var(--f-display); font-size: 28px; margin-bottom: 12px; }
+.ticks { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.ticks li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.ticks li::before { content: ""; width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg) translateY(-2px); }
+
+/* --- партнёрам --- */
+.partner-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-bottom: 56px; border-top: 1px solid rgba(201, 164, 106, .5); }
+@media (max-width: 860px) { .partner-grid { grid-template-columns: minmax(0, 1fr); } }
+.partner { padding: 28px 28px 28px 0; display: grid; gap: 14px; align-content: start; }
+.partner + .partner { padding-left: 28px; border-left: 1px solid rgba(201, 164, 106, .3); }
+@media (max-width: 860px) {
+  .partner, .partner + .partner { padding: 28px 0; border-left: 0; border-bottom: 1px solid rgba(201, 164, 106, .3); }
+}
+.partner .who { font: 500 12px var(--f-sans); letter-spacing: .24em; text-transform: uppercase; color: var(--band-gold); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.partner h3 { font-family: var(--f-serif); font-weight: 500; font-size: 28px; line-height: 1.15; }
+.partner p, .partner li { color: var(--band-muted); font-size: 15px; }
+.partner .ticks li::before { background: var(--band-gold); }
+.badge-soon { font: 500 10px/1 var(--f-sans); letter-spacing: .14em; text-transform: uppercase; color: #1C1A1F; background: var(--band-gold); padding: 4px 7px 3px; }
+
+/* --- контакты --- */
+.contacts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .contacts { grid-template-columns: minmax(0, 1fr); } }
+.contact { border: 1px solid var(--line); padding: 24px 22px; display: grid; gap: 10px; align-content: start; background: var(--bg-raised); }
+.contact .k { font: 500 12px var(--f-sans); letter-spacing: .24em; text-transform: uppercase; color: var(--gold); }
+.contact .v { font-family: var(--f-serif); font-size: 24px; font-weight: 500; overflow-wrap: anywhere; user-select: all; }
+.contact p { color: var(--muted); font-size: 14px; }
+.copy { justify-self: start; background: none; border: 1px solid var(--line); color: var(--fg); font: 500 12px var(--f-sans); letter-spacing: .1em; text-transform: uppercase; padding: 8px 12px; cursor: pointer; border-radius: var(--radius); }
+.copy:hover { border-color: var(--gold); }
+
+/* --- подвал --- */
+.foot { border-top: 1px solid var(--line); }
+.foot .wrap { padding-block: 40px; display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+.foot-brand { display: flex; align-items: center; gap: 16px; }
+.foot-brand svg { width: 40px; height: auto; }
+.foot-brand .name { font-family: var(--f-display); font-size: 22px; letter-spacing: .16em; color: var(--logo-main); }
+.foot-brand .tag { font-family: var(--f-serif); font-style: italic; color: var(--gold); font-size: 17px; }
+.foot nav { display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 14px; }
+.foot nav a { text-decoration: none; color: var(--muted); }
+.foot nav a:hover { color: var(--fg); }
+.foot small { color: var(--muted); font-size: 13px; width: 100%; }
+</style>
+</head>
+<body>
+
+<!-- Знак-ромб из фирстиля (kermesse-4-znak), цвета через переменные -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="znak" viewBox="94 38.5 324 435">
+    <path d="M256,54.52 L402,256 L256,457.48 L110,256Z" fill="none" stroke="var(--logo-main)" stroke-width="7.68" stroke-linejoin="round"/>
+    <path class="glow" d="M256,76.68 L385.94,256 L256,435.32 L126.06,256Z" fill="none" stroke="var(--logo-gold)" stroke-width="2.88" stroke-linejoin="round"/>
+    <path d="M256,89.195 L266.95,104.306 L256,119.417 L245.05,104.306Z" fill="var(--logo-gold)"/>
+    <path d="M256,392.583 L266.95,407.694 L256,422.805 L245.05,407.694Z" fill="var(--logo-gold)"/>
+    <circle cx="146.94" cy="256" r="3.21" fill="var(--logo-gold)"/>
+    <circle cx="365.06" cy="256" r="3.21" fill="var(--logo-gold)"/>
+    <path d="M228.61 198.768V271.044L281.427 198.768L282.736 199.913L253.465 239.812L296.962 313.232H281.754L245.126 251.258L228.61 273.987V313.232H215.038V198.768Z" fill="var(--logo-main)"/>
+  </symbol>
+</svg>
+
+<div class="mock-note" role="note">
+  <div class="wrap">
+    <span>Сайт в разработке. Тексты <span class="stub">с такой подсветкой</span> временные.</span>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Kermesse, на главную">
+      <svg viewBox="0 0 324 435" aria-hidden="true"><use href="#znak"/></svg>
+      <span class="brand-word">KERMESSE</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="nav">Меню</button>
+    <nav class="nav" id="nav" aria-label="Разделы">
+      <a href="#vechera">Афиша</a>
+      <a href="#format">Формат</a>
+      <a href="#gostyam">Гостям</a>
+      <a href="#uchastnikam">Участникам</a>
+      <a href="#partneram">Партнёрам</a>
+      <a href="#kontakty">Контакты</a>
+      <a class="nav-cta" href="#zapis">Записаться</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ГЕРОЙ -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Камерные вечера в Москве</div>
+        <h1 id="heroTitle" style="margin-top:20px">Искусство встреч</h1>
+        <p class="sub">senti la sera</p>
+        <p class="intro">Kermesse собирает вечера, где живая музыка, искусство и хорошая компания встречаются за одним столом. Тридцать–шестьдесят гостей, своя история у каждого вечера и время, чтобы познакомиться.</p>
+        <div class="actions">
+          <a class="btn" href="#vechera">Ближайшие вечера</a>
+          <a class="btn ghost" href="#format">Как это устроено</a>
+        </div>
+      </div>
+      <div class="hero-mark">
+        <svg viewBox="0 0 324 435" role="img" aria-label="Знак Kermesse: буква K в ромбе"><use href="#znak"/></svg>
+        <p class="since">since 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ТРИ ДВЕРИ -->
+  <div class="doors">
+    <div class="wrap">
+      <p class="doors-title">Расскажем главное. Кто вы?</p>
+      <div class="door-grid">
+        <a class="door" href="#vechera">
+          <span class="who">Гостям</span>
+          <h3>Хочу прийти на вечер</h3>
+          <p>Афиша, что будет на вечере, сколько стоит и как записаться.</p>
+          <span class="go">Смотреть афишу</span>
+        </a>
+        <a class="door" href="#uchastnikam">
+          <span class="who">Творческим людям</span>
+          <h3>Хочу выступить или показать работы</h3>
+          <p>Музыкантам, художникам, мастерам и ведущим: условия и заявка.</p>
+          <span class="go">Стать участником</span>
+        </a>
+        <a class="door" href="#partneram">
+          <span class="who">Площадкам и бизнесу</span>
+          <h3>Хочу сотрудничать или заказать вечер</h3>
+          <p>Площадкам, подрядчикам и тем, кому нужен вечер под ключ.</p>
+          <span class="go">Партнёрство</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- АФИША -->
+  <section id="vechera" aria-labelledby="vecheraTitle" style="border-top:1px solid var(--line)">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Афиша</div>
+        <h2 id="vecheraTitle">Ближайшие вечера</h2>
+        <p class="lead">Мест немного, поэтому на каждый вечер нужна регистрация. Анонсы выходят сначала в нашем Telegram-канале.</p>
+      </div>
+
+      <div class="events">
+        <article class="ticket" aria-labelledby="ev1">
+          <div class="ticket-date">
+            <span class="month">ноябрь</span>
+            <span class="day stub">14</span>
+            <span class="wd stub">четверг</span>
+          </div>
+          <div class="ticket-body">
+            <div class="ticket-kind">Музыкальный вечер · 30 гостей</div>
+            <h3 id="ev1">Осенний вечер: волшебная история</h3>
+            <p class="desc">Струнный дуэт играет музыку из любимых фэнтези-саундтреков, а ведущий рассказывает историю о школе волшебства, в которую вы только что поступили. Свечи, тыквы, квиз и ужин «как на пиру» по меню площадки.</p>
+            <dl class="facts">
+              <div><dt>Время</dt><dd><span class="stub">19:00–22:00</span></dd></div>
+              <div><dt>Где</dt><dd><span class="stub">книжное кафе в центре, адрес в письме</span></dd></div>
+              <div><dt>Вход</dt><dd><span class="stub">по регистрации, ужин по меню</span></dd></div>
+            </dl>
+            <div class="actions">
+              <a class="btn" href="#zapis" data-event="Осенний вечер: волшебная история">Записаться</a>
+              <span class="stub-tag">заглушка: дата и место</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="ticket" aria-labelledby="ev2">
+          <div class="ticket-date">
+            <span class="month">ноябрь</span>
+            <span class="day stub">28</span>
+            <span class="wd stub">пятница</span>
+          </div>
+          <div class="ticket-body">
+            <div class="ticket-kind">Арт-вечер и знакомства · 40–60 гостей</div>
+            <h3 id="ev2">Осенний салон</h3>
+            <p class="desc">Пять-шесть московских художников покажут работы на тему осени и за 5–7 минут расскажут, как они появились. Понравившуюся картину можно купить прямо у автора. Рядом небольшая ярмарка украшений ручной работы.</p>
+            <dl class="facts">
+              <div><dt>Время</dt><dd><span class="stub">19:00–22:30</span></dd></div>
+              <div><dt>Где</dt><dd><span class="stub">кафе, площадка уточняется</span></dd></div>
+              <div><dt>Вход</dt><dd><span class="stub">500 ₽</span></dd></div>
+            </dl>
+            <div class="actions">
+              <a class="btn" href="#zapis" data-event="Осенний салон">Записаться</a>
+              <a class="btn ghost" href="#uchastnikam">Я художник</a>
+              <span class="stub-tag">заглушка: дата, место, цена</span>
+            </div>
+          </div>
+        </article>
+
+        <div class="soon">
+          <p>Готовим зимний вечер. <em>Подпишитесь на канал</em>, чтобы узнать первыми.</p>
+          <a class="btn ghost" href="#kontakty">Наш Telegram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ФОРМАТ -->
+  <section id="format" class="band" aria-labelledby="formatTitle">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Формат</div>
+        <h2 id="formatTitle">Что такое вечер Kermesse</h2>
+        <p class="lead">Это не концерт, где сидишь в темноте, и не вечеринка, где ничего не слышно. Это небольшой вечер, на который приходишь за впечатлением, а уходишь с новыми знакомыми.</p>
+      </div>
+      <div class="format-grid">
+        <div class="traits">
+          <div class="trait">
+            <h3>Камерно</h3>
+            <p>От 30 до 60 гостей. Все помещаются в одном зале и успевают поговорить друг с другом.</p>
+          </div>
+          <div class="trait">
+            <h3>Вживую</h3>
+            <p>Музыканты играют в паре метров от вас, художники стоят рядом со своими работами и отвечают на вопросы.</p>
+          </div>
+          <div class="trait">
+            <h3>Со своей историей</h3>
+            <p>У каждого вечера есть тема: под неё подбираем музыку, декор, угощение и вопросы квиза.</p>
+          </div>
+          <div class="trait">
+            <h3>Легко прийти</h3>
+            <p>Можно одному: ведущий познакомит. Дресс-код по желанию, а тематическая деталь в образе приветствуется.</p>
+          </div>
+        </div>
+        <div class="programme">
+          <h3>ПРОГРАММА</h3>
+          <p class="hint">примерный ход вечера</p>
+          <ol>
+            <li><time>19:00</time><div><b>Сбор гостей</b><span>Встречаем, рассаживаем, знакомим</span></div></li>
+            <li><time>19:30</time><div><b>Главная часть</b><span>Музыка, рассказ ведущего или выступления художников</span></div></li>
+            <li><time>20:30</time><div><b>Пауза и ужин</b><span>Тематическое меню площадки, разговоры</span></div></li>
+            <li><time>21:00</time><div><b>Квиз или ярмарка</b><span>Игра по теме вечера или покупка работ</span></div></li>
+            <li><time>22:00</time><div><b>Последняя мелодия</b><span>Общее фото и до встречи</span></div></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ГОСТЯМ -->
+  <section id="gostyam" aria-labelledby="gostyamTitle">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Гостям</div>
+        <h2 id="gostyamTitle">Как попасть на вечер</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Выберите вечер</h3><p>Все ближайшие события есть в афише выше и в нашем Telegram-канале.</p></li>
+        <li><h3>Зарегистрируйтесь</h3><p>Оставьте имя и контакт. Мест мало, поэтому регистрация закрывается, когда зал заполнен.</p></li>
+        <li><h3>Получите приглашение</h3><p>За день до вечера пришлём адрес, время и маленькую подсказку, к чему готовиться.</p></li>
+      </ol>
+
+      <div class="split">
+        <div>
+          <h3 style="font-family:var(--f-display);font-size:30px;margin-bottom:20px">Частые вопросы</h3>
+          <div class="faq">
+            <details>
+              <summary>Сколько стоит вход?</summary>
+              <p>Зависит от вечера, цена всегда указана в афише. На часть вечеров вход свободный по регистрации, а еду и напитки вы заказываете по меню площадки. <span class="stub">Цены уточняются.</span></p>
+            </details>
+            <details>
+              <summary>Можно прийти одному?</summary>
+              <p>Конечно. Многие так и приходят. Ведущий в начале вечера знакомит гостей, а квиз проходит в командах, которые собираются прямо на месте.</p>
+            </details>
+            <details>
+              <summary>Есть ли дресс-код?</summary>
+              <p>Строгого нет. Приходите в том, в чём вам удобно и красиво. Если хочется, добавьте деталь по теме вечера: шарф, брошь, цвет.</p>
+            </details>
+            <details>
+              <summary>Можно ли с детьми?</summary>
+              <p><span class="stub">Наши вечера рассчитаны на гостей от 16 лет. Если у вечера другие правила, мы пишем об этом в афише.</span></p>
+            </details>
+            <details>
+              <summary>Что если я не смогу прийти?</summary>
+              <p>Напишите нам хотя бы за день, и мы отдадим ваше место гостю из листа ожидания. <span class="stub">Правила возврата для платных вечеров.</span></p>
+            </details>
+          </div>
+        </div>
+
+        <form class="form-card" id="zapis" data-form="guest" novalidate>
+          <h3>Записаться на вечер</h3>
+          <div class="fields">
+            <div class="field wide">
+              <label for="g-event">Вечер</label>
+              <select id="g-event" name="event">
+                <option>Осенний вечер: волшебная история</option>
+                <option>Осенний салон</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="g-name">Имя</label>
+              <input id="g-name" name="name" autocomplete="name" placeholder="Как к вам обращаться">
+            </div>
+            <div class="field">
+              <label for="g-count">Сколько вас</label>
+              <select id="g-count" name="count"><option>1</option><option>2</option><option>3</option><option>4</option></select>
+            </div>
+            <div class="field wide">
+              <label for="g-contact">Telegram или телефон</label>
+              <input id="g-contact" name="contact" placeholder="@username или +7…">
+            </div>
+          </div>
+          <div class="form-row">
+            <button class="btn" type="submit">Записаться</button>
+            <span class="note">На настоящем сайте здесь может быть кнопка TimePad или своя форма.</span>
+          </div>
+          <p class="form-done" hidden role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- УЧАСТНИКАМ -->
+  <section id="uchastnikam" aria-labelledby="uchTitle" style="border-top:1px solid var(--line)">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Творческим людям</div>
+        <h2 id="uchTitle">Выступите на вечере Kermesse</h2>
+        <p class="lead">Мы ищем тех, кто делает красивые вещи и хочет показать их живой, внимательной публике. Не важно, сколько у вас подписчиков: важно, что вам есть что сказать.</p>
+      </div>
+
+      <div class="roles">
+        <div class="role"><h3>Музыканты</h3><p>Камерные составы: дуэты, трио, акустика, классика и саундтреки.</p></div>
+        <div class="role"><h3>Художники</h3><p>Живопись, графика, иллюстрация, фотография. Особенно рады тем, кто только начинает выставляться.</p></div>
+        <div class="role"><h3>Мастера</h3><p>Украшения, керамика, текстиль и другие вещи ручной работы для ярмарки.</p></div>
+        <div class="role"><h3>Ведущие и рассказчики</h3><p>Те, кто умеет держать зал, вести квиз и рассказывать истории.</p></div>
+      </div>
+
+      <div class="split">
+        <div class="terms">
+          <div>
+            <h3>Что вы получаете</h3>
+            <ul class="ticks">
+              <li>Зал, где вас слушают и смотрят, а не проходят мимо</li>
+              <li>Анонс с вашим именем в нашем Telegram и на афише</li>
+              <li>Фотографии с вечера для вашего портфолио</li>
+              <li>Продажа работ напрямую: деньги за картину или украшение получаете вы</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Условия</h3>
+            <ul class="ticks">
+              <li><span class="stub">Музыкантам и ведущим: гонорар обсуждаем под каждый вечер</span></li>
+              <li><span class="stub">Художникам: участие бесплатное, Kermesse не берёт комиссию</span></li>
+              <li><span class="stub">Мастерам ярмарки: взнос за место 1 000–1 500 ₽</span></li>
+              <li>Работы и выступления без шок-контента и политики: наши вечера для всех</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Как всё проходит</h3>
+            <ol class="ticks" style="counter-reset:none">
+              <li>Вы оставляете заявку со ссылкой на работы</li>
+              <li>Мы отвечаем в течение <span class="stub">5 дней</span> и созваниваемся</li>
+              <li>Выбираем вечер, который подходит вам по теме</li>
+            </ol>
+          </div>
+        </div>
+
+        <form class="form-card" data-form="artist" novalidate>
+          <h3>Заявка участника</h3>
+          <div class="fields">
+            <div class="field">
+              <label for="a-name">Имя или псевдоним</label>
+              <input id="a-name" name="name" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="a-role">Кто вы</label>
+              <select id="a-role" name="role">
+                <option>Музыкант</option><option>Художник</option><option>Мастер хендмейда</option><option>Ведущий, рассказчик</option><option>Другое</option>
+              </select>
+            </div>
+            <div class="field wide">
+              <label for="a-link">Где посмотреть ваши работы</label>
+              <input id="a-link" name="link" placeholder="Ссылка на Telegram, VK, сайт или портфолио">
+            </div>
+            <div class="field wide">
+              <label for="a-contact">Как с вами связаться</label>
+              <input id="a-contact" name="contact" placeholder="@username или +7…">
+            </div>
+            <div class="field wide">
+              <label for="a-msg">Пара слов о себе</label>
+              <textarea id="a-msg" name="msg" placeholder="Что вы делаете и с чем хотели бы выступить"></textarea>
+            </div>
+          </div>
+          <div class="form-row">
+            <button class="btn" type="submit">Отправить заявку</button>
+          </div>
+          <p class="form-done" hidden role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПАРТНЁРАМ -->
+  <section id="partneram" class="band" aria-labelledby="partTitle">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Площадкам и бизнесу</div>
+        <h2 id="partTitle">Сотрудничество</h2>
+        <p class="lead">Kermesse работает с небольшими площадками и подрядчиками, которые любят своё дело. Мы приводим гостей, вы делаете вечер вкуснее и красивее.</p>
+      </div>
+
+      <div class="partner-grid">
+        <div class="partner">
+          <span class="who">Площадкам</span>
+          <h3>Кафе, галереи, книжные, лофты</h3>
+          <ul class="ticks">
+            <li>Приводим 30–60 гостей в будний вечер, когда зал обычно пустует</li>
+            <li>Работаем по депозиту на меню или за процент от бара</li>
+            <li>Рассказываем о вашей площадке в анонсах и на фото</li>
+          </ul>
+        </div>
+        <div class="partner">
+          <span class="who">Подрядчикам</span>
+          <h3>Фотографы, флористы, декораторы, кейтеринг</h3>
+          <ul class="ticks">
+            <li>Ищем постоянных партнёров на регулярные вечера</li>
+            <li>Отмечаем вас в анонсах и публикациях с вечера</li>
+            <li><span class="stub">Условия: оплата, бартер или процент, обсуждаем</span></li>
+          </ul>
+        </div>
+        <div class="partner">
+          <span class="who">Заказчикам <span class="badge-soon">скоро</span></span>
+          <h3>Вечер под ключ</h3>
+          <ul class="ticks">
+            <li>Камерные концерты и арт-вечера для своих гостей</li>
+            <li>Частные праздники: день рождения, помолвка, юбилей</li>
+            <li>Вечера для команды: корпоратив без банкетного зала и тамады</li>
+          </ul>
+          <p><span class="stub">Пакеты и цены появятся позже. Пока можно оставить заявку, и мы подготовим предложение.</span></p>
+        </div>
+      </div>
+
+      <form class="form-card" data-form="partner" novalidate style="max-width:820px">
+        <h3>Написать о сотрудничестве</h3>
+        <div class="fields">
+          <div class="field">
+            <label for="p-name">Имя</label>
+            <input id="p-name" name="name" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="p-org">Компания или площадка</label>
+            <input id="p-org" name="org" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="p-kind">Что вас интересует</label>
+            <select id="p-kind" name="kind">
+              <option>Предлагаю площадку</option><option>Я подрядчик</option><option>Хочу заказать вечер</option><option>Другое</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="p-contact">Телефон, почта или Telegram</label>
+            <input id="p-contact" name="contact">
+          </div>
+          <div class="field wide">
+            <label for="p-msg">Сообщение</label>
+            <textarea id="p-msg" name="msg" placeholder="Коротко о вас и вашей идее"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <button class="btn" type="submit">Отправить</button>
+          <span class="note">Ответим в течение <span class="stub">2 рабочих дней</span>.</span>
+        </div>
+        <p class="form-done" hidden role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- КОНТАКТЫ -->
+  <section id="kontakty" aria-labelledby="kontTitle">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Контакты</div>
+        <h2 id="kontTitle">Будем на связи</h2>
+        <p class="lead">Быстрее всего ответим в Telegram. В канале выходят анонсы, фото с вечеров и новости.</p>
+      </div>
+      <div class="contacts">
+        <div class="contact">
+          <span class="k">Telegram-канал</span>
+          <span class="v stub">@kermesse_msk</span>
+          <p>Афиша и анонсы</p>
+          <button class="copy" type="button" data-copy="@kermesse_msk">Скопировать</button>
+        </div>
+        <div class="contact">
+          <span class="k">Почта</span>
+          <span class="v stub">hello@kermesse.ru</span>
+          <p>Для площадок и заказчиков</p>
+          <button class="copy" type="button" data-copy="hello@kermesse.ru">Скопировать</button>
+        </div>
+        <div class="contact">
+          <span class="k">Организатор</span>
+          <span class="v">Кира</span>
+          <p><span class="stub">+7 900 000-00-00</span>, Москва</p>
+          <button class="copy" type="button" data-copy="+7 900 000-00-00">Скопировать</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-brand">
+      <svg viewBox="0 0 324 435" aria-hidden="true"><use href="#znak"/></svg>
+      <div>
+        <div class="name">KERMESSE</div>
+        <div class="tag">Искусство встреч · senti la sera</div>
+      </div>
+    </div>
+    <nav aria-label="Разделы в подвале">
+      <a href="#vechera">Афиша</a><a href="#format">Формат</a><a href="#gostyam">Гостям</a><a href="#uchastnikam">Участникам</a><a href="#partneram">Партнёрам</a><a href="#kontakty">Контакты</a>
+    </nav>
+    <small>© 2026 Kermesse, Москва. <span class="stub">Политика обработки персональных данных</span></small>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var nav = document.getElementById('nav');
+  var toggle = document.getElementById('navToggle');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.textContent = open ? 'Закрыть' : 'Меню';
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); toggle.textContent = 'Меню'; }
+  });
+
+  // «Записаться» в карточке вечера выбирает этот вечер в форме
+  document.querySelectorAll('[data-event]').forEach(function (a) {
+    a.addEventListener('click', function () { document.getElementById('g-event').value = a.getAttribute('data-event'); });
+  });
+
+  var messages = {
+    guest: 'Готово! В макете запись никуда не отправляется. На настоящем сайте гость получит подтверждение, а вы увидите заявку в Telegram или на почте.',
+    artist: 'Спасибо! Это макет, поэтому заявка не отправилась. На настоящем сайте она придёт вам в Telegram или на почту.',
+    partner: 'Спасибо! Это макет, поэтому сообщение не отправилось. На настоящем сайте оно придёт вам на почту.'
+  };
+  document.querySelectorAll('form[data-form]').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var done = f.querySelector('.form-done');
+      done.textContent = messages[f.getAttribute('data-form')];
+      done.hidden = false;
+    });
+  });
+
+  document.querySelectorAll('.copy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var text = b.getAttribute('data-copy');
+      var ok = function () { b.textContent = 'Скопировано'; setTimeout(function () { b.textContent = 'Скопировать'; }, 1600); };
+      var fallback = function () {
+        var v = b.parentNode.querySelector('.v') || b.parentNode;
+        var r = document.createRange(); r.selectNodeContents(v);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        b.textContent = 'Выделено, нажмите Ctrl+C';
+      };
+      try { navigator.clipboard.writeText(text).then(ok, fallback); } catch (err) { fallback(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
