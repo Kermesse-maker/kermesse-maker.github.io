@@ -389,7 +389,7 @@ section { padding-block: 72px; }
       <a href="#uchastnikam">Участникам</a>
       <a href="#partneram">Партнёрам</a>
       <a href="#kontakty">Контакты</a>
-      <a class="nav-cta" href="#zapis">Записаться</a>
+      <a class="nav-cta" href="#vechera">Записаться</a>
     </nav>
   </div>
 </header>
@@ -468,7 +468,7 @@ section { padding-block: 72px; }
               <div><dt>Вход</dt><dd>по регистрации, ужин по меню</dd></div>
             </dl>
             <div class="actions">
-              <a class="btn" href="#zapis" data-event="Осенний вечер: волшебная история">Записаться</a>
+              <a class="btn" data-timepad href="https://t.me/kermesse_events" target="_blank" rel="noopener">Записаться</a>
             </div>
           </div>
         </article>
@@ -532,7 +532,7 @@ section { padding-block: 72px; }
       </div>
       <ol class="steps">
         <li><h3>Выберите вечер</h3><p>Все ближайшие события есть в афише выше и в нашем Telegram-канале.</p></li>
-        <li><h3>Зарегистрируйтесь</h3><p>Оставьте имя и контакт. Мест мало, поэтому регистрация закрывается, когда зал заполнен.</p></li>
+        <li><h3>Зарегистрируйтесь на TimePad</h3><p>Оставьте имя и почту, и билет придёт на почту. Мест мало, поэтому регистрация закрывается, когда зал заполнен.</p></li>
         <li><h3>Получите напоминание</h3><p>За 3 дня до вечера напомним о встрече и продублируем всю информацию: адрес, время и что взять с собой.</p></li>
       </ol>
 
@@ -559,34 +559,13 @@ section { padding-block: 72px; }
           </div>
         </div>
 
-        <form class="form-card" id="zapis" data-form="guest" novalidate>
+        <div class="form-card" id="zapis">
           <h3>Записаться на вечер</h3>
-          <div class="fields">
-            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <div class="field wide">
-              <label for="g-event">Вечер</label>
-              <select id="g-event" name="event">
-                <option>Осенний вечер: волшебная история</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="g-name">Имя</label>
-              <input id="g-name" name="name" autocomplete="name" placeholder="Как к вам обращаться">
-            </div>
-            <div class="field">
-              <label for="g-count">Сколько вас</label>
-              <select id="g-count" name="count"><option>1</option><option>2</option><option>3</option><option>4</option></select>
-            </div>
-            <div class="field wide">
-              <label for="g-contact">Telegram или телефон</label>
-              <input id="g-contact" name="contact" placeholder="@username или +7…">
-            </div>
-          </div>
+          <p>Регистрация и билеты на наши вечера проходят на TimePad. Выберите вечер в афише или нажмите кнопку ниже: там можно выбрать дату, оставить контакты и получить электронный билет на почту.</p>
           <div class="form-row">
-            <button class="btn" type="submit">Записаться</button>
+            <a class="btn" data-timepad href="https://t.me/kermesse_events" target="_blank" rel="noopener">Записаться</a>
           </div>
-          <p class="form-done" hidden role="status"></p>
-        </form>
+        </div>
       </div>
     </div>
   </section>
@@ -809,15 +788,10 @@ section { padding-block: 72px; }
     if (e.target.tagName === 'A') { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); toggle.textContent = 'Меню'; }
   });
 
-  // «Записаться» в карточке вечера выбирает этот вечер в форме
-  document.querySelectorAll('[data-event]').forEach(function (a) {
-    a.addEventListener('click', function () { document.getElementById('g-event').value = a.getAttribute('data-event'); });
-  });
 
   // Адрес функции в Яндекс Облаке, которая пересылает заявки в Telegram. Пока пусто, формы просят написать в Telegram.
   var FORM_URL = '';
   var messages = {
-    guest: 'Спасибо, вы записаны! Мы свяжемся с вами и за 3 дня до вечера напомним о встрече.',
     artist: 'Спасибо за заявку! Мы посмотрим ваши работы и ответим в течение 5 дней.',
     partner: 'Спасибо! Мы ответим в течение 2 рабочих дней.'
   };
