@@ -302,6 +302,7 @@ section { padding-block: 72px; }
 .field textarea { min-height: 96px; resize: vertical; }
 .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--focus); outline-offset: 0; border-color: transparent; }
 .form-done { font-family: var(--f-serif); font-size: 19px; padding: 14px 16px; border: 1px dashed var(--gold); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .form-row { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
 
 /* --- участникам --- */
@@ -561,6 +562,7 @@ section { padding-block: 72px; }
         <form class="form-card" id="zapis" data-form="guest" novalidate>
           <h3>Записаться на вечер</h3>
           <div class="fields">
+            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
             <div class="field wide">
               <label for="g-event">Вечер</label>
               <select id="g-event" name="event">
@@ -637,6 +639,7 @@ section { padding-block: 72px; }
         <form class="form-card" data-form="artist" novalidate>
           <h3>Заявка участника</h3>
           <div class="fields">
+            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
             <div class="field">
               <label for="a-name">Имя или псевдоним</label>
               <input id="a-name" name="name" autocomplete="name">
@@ -712,6 +715,7 @@ section { padding-block: 72px; }
       <form class="form-card" data-form="partner" novalidate style="max-width:820px">
         <h3>Написать о сотрудничестве</h3>
         <div class="fields">
+            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="field">
             <label for="p-name">Имя</label>
             <input id="p-name" name="name" autocomplete="name">
@@ -810,17 +814,29 @@ section { padding-block: 72px; }
     a.addEventListener('click', function () { document.getElementById('g-event').value = a.getAttribute('data-event'); });
   });
 
+  // Адрес функции в Яндекс Облаке, которая пересылает заявки в Telegram. Пока пусто, формы просят написать в Telegram.
+  var FORM_URL = '';
   var messages = {
-    guest: 'Готово! В макете запись никуда не отправляется. На настоящем сайте гость получит подтверждение, а вы увидите заявку в Telegram или на почте.',
-    artist: 'Спасибо! Это макет, поэтому заявка не отправилась. На настоящем сайте она придёт вам в Telegram или на почту.',
-    partner: 'Спасибо! Это макет, поэтому сообщение не отправилось. На настоящем сайте оно придёт вам на почту.'
+    guest: 'Спасибо, вы записаны! Мы свяжемся с вами и за 3 дня до вечера напомним о встрече.',
+    artist: 'Спасибо за заявку! Мы посмотрим ваши работы и ответим в течение 5 дней.',
+    partner: 'Спасибо! Мы ответим в течение 2 рабочих дней.'
   };
+  var fallback = 'Не получилось отправить форму. Напишите нам, пожалуйста, в Telegram: @kermesse_events';
   document.querySelectorAll('form[data-form]').forEach(function (f) {
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       var done = f.querySelector('.form-done');
-      done.textContent = messages[f.getAttribute('data-form')];
-      done.hidden = false;
+      var btn = f.querySelector('button[type="submit"]');
+      var show = function (text) { done.textContent = text; done.hidden = false; btn.disabled = false; };
+      var data = { form: f.getAttribute('data-form') };
+      new FormData(f).forEach(function (v, k) { data[k] = v; });
+      if (!data.name || !data.contact) { show('Пожалуйста, укажите имя и контакт для связи.'); return; }
+      if (!FORM_URL) { show(fallback); return; }
+      btn.disabled = true;
+      fetch(FORM_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(data) })
+        .then(function (r) { return r.ok ? r.json() : { ok: false }; })
+        .then(function (r) { if (r.ok) { show(messages[data.form]); f.reset(); } else { show(fallback); } })
+        .catch(function () { show(fallback); });
     });
   });
 
