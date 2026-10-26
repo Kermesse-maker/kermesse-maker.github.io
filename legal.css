@@ -1,0 +1,34 @@
+:root {
+  --bg: #FFFFFF; --bg-raised: #F8F1E9; --fg: #1C1A1F; --muted: #6A5A5D; --line: #E6D8C9;
+  --accent: #5A1E2C; --gold: #A8834A; --stub-bg: rgba(168, 131, 74, .2); --focus: #A8834A;
+  --f-display: "Italiana", "Cormorant Garamond", Georgia, serif;
+  --f-serif: "Cormorant Garamond", Georgia, serif;
+  --f-sans: "Jost", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1C1A1F; --bg-raised: #252228; --fg: #F3E7DA; --muted: #B8AAA2; --line: #3B353B;
+    --accent: #C9A46A; --gold: #C9A46A; --stub-bg: rgba(201, 164, 106, .22); --focus: #C9A46A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1C1A1F; --bg-raised: #252228; --fg: #F3E7DA; --muted: #B8AAA2; --line: #3B353B;
+  --accent: #C9A46A; --gold: #C9A46A; --stub-bg: rgba(201, 164, 106, .22); --focus: #C9A46A;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.65 var(--f-sans); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.doc { max-width: 760px; margin: 0 auto; padding: 32px 16px 72px; }
+.back { display: inline-block; margin-bottom: 32px; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: var(--muted); }
+.back:hover { color: var(--accent); }
+h1 { font: 400 clamp(32px, 6vw, 46px)/1.1 var(--f-serif); margin: 0 0 8px; text-wrap: balance; }
+.date { color: var(--muted); font-size: 14px; margin: 0 0 32px; }
+h2 { font: 500 24px/1.25 var(--f-serif); margin: 36px 0 10px; color: var(--accent); }
+p, li { margin: 0 0 10px; }
+ul { padding-left: 22px; margin: 0 0 12px; }
+.card { background: var(--bg-raised); border: 1px solid var(--line); padding: 18px 20px; margin: 0 0 12px; }
+.stub { background: var(--stub-bg); color: inherit; padding: 0 4px; border-radius: 2px; }
+.foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
